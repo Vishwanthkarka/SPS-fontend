@@ -1,6 +1,11 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import classNames from "classnames";
+import toast, { Toaster } from "react-hot-toast";
+import { MdOutlineClose } from "react-icons/md";
+import { HiLightningBolt } from "react-icons/hi";
 function App() {
   return (
     <div className="App">

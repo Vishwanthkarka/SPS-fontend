@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+@font-face {
+    font-family: 'Avenir';
+    src: local('Rajdhani'), url(./Averta_Standard/AvertaStd-Bold.ttf) format('truetype');
+  }
+  @font-face {
+    font-family: 'Avenir-regular';
+    src: local('Rajdhani'), url(./Averta_Standard/AvertaStd-Regular.ttf) format('truetype');
+  }
+body{
+    background-color: #EAEBF5;
+    font-family: 'Avenir';
+}
+* {
+    margin: 0;
+    padding: 0px;
+}
+
+
