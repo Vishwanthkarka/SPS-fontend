@@ -3,7 +3,6 @@ import { signup } from "../auth/helper/index";
 import { Link } from "react-router-dom";
 import Bg from "../assets/Signup-background.jpg";
 
-
  function SignupForm() {
   const [values,setValue] = useState({
     name:"",
@@ -14,10 +13,15 @@ import Bg from "../assets/Signup-background.jpg";
     parentPhone:"",
     section:"",
     parentName:"",
-    image:""
+    image:null,
+    error:"",
+    loading:false,
+    didRedirect:false
     
   })
+  
   const { name,
+    error,
   email,
   parentEmail,
   password,
@@ -25,47 +29,71 @@ import Bg from "../assets/Signup-background.jpg";
   parentPhone,
   section,
   parentName,
-  image
+  image,
+
+  success,
+  loading,
+  didRedirect
   } = values
+
+
+
   const inputHandler = (name) => (el)=>{
-setValue({...values,[name]:el.target.value})
+    const value = name === "image" ? el.target.files[0] : el.target.value;
+
+setValue({...values,[name]:value,error:""})
 console.log(values)
+
+
   }
+
+
+
+
   const onSubmit = (el) =>{
 el.preventDefault()
-signup({email,
-  parentEmail,
-  password,
-  studentPhone,
-  parentPhone,
-  section,
-  parentName,
-  image,
-name}).then(data=> {
-  if(data.error){
-    setValue({...values, error :data.error,loading:false})
-  }
-  else{
-    setValue({
-      ...values,
-      name:"",
-      email:"",
-      parentEmail:"",
-      password:"",
-      studentPhone:"",
-      parentPhone:"",
-      section:"",
-      parentName:"",
-      image:""
-    })
-  }
+let formData = new FormData();
+formData.append("email",email );
+formData.append("password",password );
+formData.append("photo", image);
+
+console.log(values)
+console.log(formData)
+console.log(image)
+setValue({...values,error:"",loading:true})
+// const data = new FormData()
+// data.append("file", image)
+// console.log(data)
+console.log(values)
+signup(formData
+).then(data=> {
+  console.log(data)
+  // if(!data.success || data.success == "undefine"){
+  //   setValue({...values, error :data.message,loading:false})
+    
+  // }
+  // else{
+  //   setValue({
+  //     ...values,
+  //     name:"",
+  //     email:"",
+  //     parentEmail:"",
+  //     password:"",
+  //     studentPhone:"",
+  //     parentPhone:"",
+  //     section:"",
+  //     parentName:"",
+  //     image:""
+  //   })
+  // }
 })
 
   }
   return (
-    <div className=" bg-primary flex justify-end gap-10 items-center">
+    <div className=" bg-primary flex justify-center gap-10 items-center">
       <form
         action=""
+        encType="multipart/form-data"
         // className=" w-[450px] my-14 h-[145vh] bg-[white] rounded-[20px] px-[60px] py-[40px]"
         className="md:w-[371px] mt-9 pt-6   w-[351px] h-[1050px] bg-[white] rounded-[35px] drop-shadow-sm px-[2rem]  flex flex-col gap-[15px] "
       >
@@ -96,7 +124,7 @@ name}).then(data=> {
           className="border-solid border-[1.5px] border-[#AEB8D9] h-[40px] w-[300px] rounded-md p-3 focus:ring-1       focus:outline-none focus:border-[#4C5EE5] focus:ring-1 focus:ring-[#4C5EE5] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:ring-[#AEB8D9] focus-visible:ring-[#AEB8D9]  invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
           placeholder="Full Name"
           onChange={inputHandler("name")}
-          values={name}
+          value={name}
         />
         <p className="mt-1 text-sm peer-invalid:visible text-red-700"> Father Name</p>
         <input
@@ -112,7 +140,7 @@ name}).then(data=> {
           className="border-solid border-[1.5px] border-[#AEB8D9] h-[40px] w-[300px] rounded-md p-3 focus:ring-1       focus:outline-none focus:border-[#4C5EE5] focus:ring-1 focus:ring-[#4C5EE5] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:ring-[#AEB8D9] focus-visible:ring-[#AEB8D9]  invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
           placeholder="email@address.com"
           onChange={inputHandler("email")}
-          name = {email}
+          value = {email}
         />
         <p className="mt-1 text-sm"> Parent Email</p>
         <input
@@ -149,20 +177,26 @@ name}).then(data=> {
         </select>
         <p className="mt-1 text-sm"> Student Phone Number</p>
         <input
-          type="number"
+          type="text"
           maxlength="10"
           className="border-solid border-[1.5px] border-[#AEB8D9] h-[40px] w-[300px] rounded-md p-3 focus:ring-1       focus:outline-none focus:border-[#4C5EE5] focus:ring-1 focus:ring-[#4C5EE5] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:ring-[#AEB8D9] focus-visible:ring-[#AEB8D9]  invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
           placeholder="99999 99999"
           onChange={inputHandler("studentPhone")}
           value={studentPhone}
+          pattern="\d{10}"
+          title="Please enter exactly 10 digits"
         />
         <p className="mt-1 text-sm"> Parent Phone Number</p>
         <input
-          type="number"
+          type="text"
           maxlength="10"
           className="border-solid border-[1.5px] border-[#AEB8D9] h-[40px] w-[300px] rounded-md p-3 focus:ring-1       focus:outline-none focus:border-[#4C5EE5] focus:ring-1 focus:ring-[#4C5EE5] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:ring-[#AEB8D9] focus-visible:ring-[#AEB8D9]  invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
           placeholder="99999 99999"
           onChange={inputHandler("parentPhone")}
+          pattern="\d{10}"
+          title="Please enter exactly 10 digits"
+          
+          
       
           value={parentPhone}
         />
@@ -173,10 +207,14 @@ name}).then(data=> {
       file:text-sm file:font-semibold
       file:bg-violet-50 file:text-violet-700
       hover:file:bg-violet-100" 
-      value= {image} 
+      
+        
+            accept="image"
+          
+
       onChange={inputHandler("image")} />
         <button type="submit" onClick={onSubmit} className=" px-5 py-1  my-5 rounded-[15px] bg-primary text-[white] ">Submit</button>
-
+ <p className="text-white text-center">{JSON.stringify(values)}</p>
       </form>
        
     </div>

@@ -1,35 +1,35 @@
 import React, { useState,useEffect } from "react";
 import { authenticate, signin } from "../auth/helper/index";
 import { isAuthenticated } from "../auth/helper/index";
-
+import toast, { Toaster } from 'react-hot-toast';
 // import toast, { Toaster,error } from 'react-hot-toast';
-import toast, { useToaster } from "react-hot-toast";
-
-import { Navigate } from "react-router-dom";
+// import toast, { useToaster } from "react-hot-toast";
+import { useNavigate, Navigate } from "react-router-dom";
 
 function SigninForm() {
 
-
+  const notify = (el) => toast.success(el);
   const [value, setValue] = useState({
     email: "",
     password: "",
     error:"",
-    success:false,
     loading:false,
     didRedirect:false
   });
 
   const { email, password,error,success,loading,didRedirect } = value;
   const { user } = isAuthenticated ();
+
+  
   const changehandler = (name) => (el) => {
     setValue({ ...value, [name]: el.target.value , error:""});
-    
+    <Toaster />
     console.log(value);
   };
   const performRedirect = () => {
     if(didRedirect){
       if(user && user.role === "Admin"){
-        console.log("Admin")
+        return <Navigate to="/admin/allpermission"  replace={true}/>
         // return <Redirect to="/admin/dashboard" />
       }
       else{
@@ -61,6 +61,7 @@ signin({email,password}).then(data  => {
   console.log("hhhhhh",data)
    console.log(value) 
   if(!data.success){
+    {notify("Login successful")} 
     setValue({...value, error :data.message,loading:false})
     // toast.error(data.message)
     console.log(value)
@@ -168,12 +169,26 @@ const errorMessage = () => {
       </div>
     );
   }
+  const navigate = useNavigate();
   return (
     <div className=" bg-[#EAEBF5] ">
-      <div className=" md:absolute  bg-[white] flex justify-center items-center w-[20px] m-[13px]  p-4 cursor-pointer rounded-[50%]">
-        {" "}
-        <i class="fa-solid fa-arrow-left "></i>{" "}
-      </div>
+ <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="61" height="60" viewBox="0 0 61 60" className="cursor-pointer" onClick={ () => navigate("/")}>
+  <defs>
+    <filter id="Ellipse_4" x="0" y="0" width="61" height="60" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_4)">
+    <ellipse id="Ellipse_4-2" data-name="Ellipse 4" cx="21.5" cy="21" rx="21.5" ry="21" transform="translate(9 6)" fill="#fff"/>
+  </g>
+  <path id="Icon_awesome-arrow-left" data-name="Icon awesome-arrow-left" d="M10.732,15.743l-.925.713a1.215,1.215,0,0,1-1.413,0L.29,10.211a.652.652,0,0,1,0-1.09l8.1-6.248a1.215,1.215,0,0,1,1.413,0l.925.713a.656.656,0,0,1-.017,1.1L5.693,8.379h11.98a.906.906,0,0,1,1,.771v1.028a.906.906,0,0,1-1,.771H5.693l5.023,3.69A.653.653,0,0,1,10.732,15.743Z" transform="translate(22.618 16.679)"/>
+</svg>
+
+
 {loadingMessage}
 
       {signinForm()}
@@ -183,7 +198,7 @@ const errorMessage = () => {
       {errorMessage()}
       <button onClick={() => toast("🛎 Toast message sent!")}> hellele</button>
      { console.log(value) }
-     <p className="text-white text-center">{JSON.stringify(value)}</p>
+     {/* <p className="text-white text-center">{JSON.stringify(value)}</p> */}
     </div>
   );
 }
