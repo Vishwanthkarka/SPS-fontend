@@ -45,7 +45,7 @@ console.log("%%%%%%%%%%",values)
 
     setValues({ ...values, error: "" , email:userData["user"]["email"], loading: true });
 console.log(values)
-    AddPermision({ subject, fromDate, toDate, description, email,tag,name },isAuthenticated().user.email,isAuthenticated().token,isAuthenticated().user.role)
+    AddPermision({ subject, fromDate, toDate, description, email,tag, name:isAuthenticated().user._id },isAuthenticated().user.email,isAuthenticated().token,isAuthenticated().user.role)
       .then((data) => {
         setValues({
           subject: "",
@@ -290,7 +290,7 @@ else{
 
 // All permission  list
 allRequests.map(element => (
-  <PermssionCard subject={element.subject} tag="Event" description
+  <PermssionCard subject={element.subject} tag={element.tag} description
 = {element.description}  isApproved ={element.is_PermisssionGranted} from={element.fromDate} id={element._id}  to ={element.toDate} />
 ))
 }

@@ -20,7 +20,7 @@ function Header() {
     const navigate = useNavigate();
     return (
       <ul className="flex  ml-auto items-center gap-9">
-        <li className="text-primary cursor-pointer" onClick={ () => navigate("/signin")} >
+        <li className="text-primary cursor-pointer" onClick={ () => navigate("/signup")} >
        
           login
         </li>

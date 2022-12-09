@@ -8,6 +8,7 @@ import PermssionForm from "./PermssionForm";
 import {AcceptRequest,Userinfo} from "./helper/permissioncalls"
 export default function PermssionCard(props) {
   let [isApp, setIsApp] = useState(props.isApproved);
+
   let[workAdmin,setWorkAdmin]= useState(false)
   let [Userinf,setUserinfo] = useState({})
   const [newRequest, setNewRequest] = useState(false);
@@ -16,10 +17,11 @@ export default function PermssionCard(props) {
   const [updatingStatus,setUpdateStaus] = useState({
     is_PermisssionGranted:null
   })
+  
   const DateDiff = () => {
     var date1 = moment(props.to);
     var date2 = moment(props.from);
-    var days = date2.diff(date1, "days");
+    var days = date1.diff(date2, "days");
     return days;
   };
 
@@ -31,7 +33,7 @@ console.log(typeof Userinf);
 // },[isApp]);
 console.log(props.userid)
 console.log(updatingStatus)
-
+console.log(props.isApproved)
 const [values, setValues] = useState({
     subject: props.subject,
     fromDate: props.from,
@@ -45,7 +47,7 @@ useEffect(() => {
     },[])
   const { subject, fromDate, toDate, description, id, loading, email } = values;
   console.log(props.id);
-
+console.log("999",Userinf)
   const inputHandler = (name) => (el) => {
     setValues({
       ...values,
@@ -75,7 +77,7 @@ useEffect(() => {
   };
 
   const IsPermissionApproved = (num) => {
-    console.log(num);
+    console.log("889900",num);
     if (num == 0) {
       return (
         <p className=" w-[100px] text-[#FFD43B] flex justify-center  items-center gap-1">
@@ -327,7 +329,7 @@ useEffect(() => {
           <p className="mt-1 text-sm peer-invalid:visible text-red-700">From</p>
           <input
             type="date"
-            className="border-solid border-[1.5px]  h-[40px] w-[300px] text-[#AEB8D9]  rounded-md p-3 focus:ring-1  font-[Avenirregular]     focus:outline-none focus:border-[#4C5EE5] focus:ring-1 focus:ring-[#4C5EE5] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:ring-[#AEB8D9] focus-visible:ring-[#AEB8D9]  invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
+            className="border-solid border-[1.5px]  h-[40px] border-[#AEB8D9]  text-[#AEB8D9]  w-[300px] rounded-md p-3 focus:ring-1   font-[Avenirregular]    focus:outline-none focus:border-[#4C5EE5] focus:ring-1 focus:ring-[#4C5EE5] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:ring-[#AEB8D9] focus-visible:ring-[#AEB8D9]  invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
             placeholder="Leave from"
             onChange={inputHandler("fromDate")}
             value={fromDate}
@@ -350,7 +352,7 @@ useEffect(() => {
           ></textarea>
           <button
             type="submit"
-            className=" px-5 py-1  my-5 rounded-[15px] bg-primary text-[white] "
+            className=" px-5 py-3  my-5 rounded-[15px] bg-primary text-[white] "
             onClick={() => {
               setNewRequest(!newRequest);
               onSubmit();
@@ -383,8 +385,8 @@ useEffect(() => {
 
     //     }
     //      }
-
-    if (isApp == 0) {
+   
+    if (props.isApproved == 0) {
       if (props.isAdmin) {
         // setWorkAdmin(!workAdmin)
         return (
@@ -416,7 +418,7 @@ useEffect(() => {
                   stroke-width="3"
                 />
               </svg>
-              Approved
+              Approve
             </p>
 
             <p className=" w-[100px] text-[#EA8B9E] flex justify-center  items-center gap-1 cursor-pointer" onClick={() => {setIsView(!isView);AcceptRequest(props.id,2)}}>
@@ -442,11 +444,12 @@ useEffect(() => {
                   fill="#ea8b9e"
                 />
               </svg>
-              Rejected
+              Reject
             </p>
           </div>
         );
-      } else {
+      } 
+       else {
         return (
           <div className="flex gap-9" >
             <svg
@@ -628,7 +631,128 @@ useEffect(() => {
           <p className=" text-primary w-[50%] md:w-[100px]">
             {DateDiff()} {DateDiff() == 1 ? "Day" : "Days"}
           </p>
-          {IsPermissionApproved(isApp)}
+          {/* {IsPermissionApproved(isApp)} */}
+
+
+          {
+props.isApproved == 0 ?  ( <p className=" w-[100px] text-[#FFD43B] flex justify-center  items-center gap-1">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="27"
+  height="21"
+  viewBox="0 0 27 21"
+>
+  <path
+    id="Path_27"
+    data-name="Path 27"
+    d="M10.029,0h6.943C22.51,0,27,4.074,27,9.1v2.8c0,5.026-4.49,9.1-10.029,9.1H10.029C4.49,21,0,16.926,0,11.9V9.1C0,4.074,4.49,0,10.029,0Z"
+    fill="#f4e6b2"
+  />
+  <g
+    id="Group_56"
+    data-name="Group 56"
+    transform="translate(6.403 2.484)"
+  >
+    <path
+      id="Path_81"
+      data-name="Path 81"
+      d="M0,0H14.192V16.032H0Z"
+      fill="none"
+    />
+    <ellipse
+      id="Ellipse_26"
+      data-name="Ellipse 26"
+      cx="4"
+      cy="5"
+      rx="4"
+      ry="5"
+      transform="translate(3 3)"
+      fill="none"
+      stroke="#ffd43b"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+    />
+    <path
+      id="Path_82"
+      data-name="Path 82"
+      d="M12,7V9.455l1.69,1.473"
+      transform="translate(-5.42 -1.126)"
+      fill="none"
+      stroke="#ffd43b"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+    />
+  </g>
+</svg>
+Pending
+</p>): props.isApproved == 1 ? (  <p
+          className=" w-[100px] text-[rgb(0,128,0)] flex justify-center  items-center gap-1 " 
+          onClick={() => { ;setIsApp(1);}}
+          
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="27"
+            height="21"
+            viewBox="0 0 27 21"
+          >
+            <rect
+              id="Rectangle_16"
+              data-name="Rectangle 16"
+              width="27"
+              height="21"
+              rx="8"
+              fill="#85baad"
+            />
+            <path
+              id="Icon_feather-check"
+              data-name="Icon feather-check"
+              d="M17.806,9,9.689,16.5,6,13.091"
+              transform="translate(2.096 -2.25)"
+              fill="none"
+              stroke="#1a8e72"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="3"
+            />
+          </svg>
+          Approved
+        </p>): (
+                  <p
+                  className=" w-[100px] text-[#EA8B9E] flex justify-center  items-center gap-1"
+                  onClick={() => {setIsApp(2);}}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="27"
+                    height="21"
+                    viewBox="0 0 27 21"
+                    onClick={() => console.log(isApp)}
+                  >
+                    <rect
+                      id="Rectangle_30"
+                      data-name="Rectangle 30"
+                      width="27"
+                      height="21"
+                      rx="8"
+                      fill="#e6bdc5"
+                    />
+                    <path
+                      id="Path_28"
+                      data-name="Path 28"
+                      d="M9.506,97.712a1.092,1.092,0,0,0,0-1.481.949.949,0,0,0-1.4,0L4.861,99.676l-3.25-3.442a.949.949,0,0,0-1.4,0,1.092,1.092,0,0,0,0,1.481l3.25,3.442L.217,104.6a1.092,1.092,0,0,0,0,1.481.949.949,0,0,0,1.4,0l3.247-3.445,3.25,3.442a.949.949,0,0,0,1.4,0,1.092,1.092,0,0,0,0-1.481l-3.25-3.442Z"
+                      transform="translate(8.639 -90.657)"
+                      fill="#ea8b9e"
+                    />
+                  </svg>
+                  Rejected
+                </p>
+        )
+
+
+          }
           <p className=" cursor-pointer ">
             <svg
               xmlns="http://www.w3.org/2000/svg"

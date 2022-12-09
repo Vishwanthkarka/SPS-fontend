@@ -10,7 +10,6 @@ useEffect(() => {
   GetAllPermissions(isAuthenticated().user.email,isAuthenticated().token, isAuthenticated().user.role).then(
   el => (
     setAllPer(el.products)
-    
   )
   ).catch(err=> console.log(err))
   

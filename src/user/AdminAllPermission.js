@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PermssionCard from "./PermssionCard";
+import Header from "../core/Header";
 import { isAuthenticated } from "../auth/helper";
 import { GetAllPermissions } from "./helper/permissioncalls";
 export default function AdminAllPermission() {
@@ -21,7 +22,6 @@ export default function AdminAllPermission() {
 
   const OnSubmit = (el) => {
     el.preventDefault();
-
      GetAllPermissions(isAuthenticated().user.email,isAuthenticated().token,isAuthenticated().user.role,`/?is_PermisssionGranted=${is_PermisssionGranted} ${search?`&search=${search}`:""}`).then(data=>(setAllRequests(data.products) ))
   };
 
@@ -36,21 +36,14 @@ export default function AdminAllPermission() {
     
     );
   }, [count]);
-
     console.log(allRequests);
-
     console.log(searchSort);
     return (
       <>
+{Header()}
         <div className="flex  gap-[80px] h-[90px] items-center justify-center ">
           <h2>List of Permssions </h2>
-          <input
-            type="text"
-            className="w-[190px] h-[35px] rounded-[40px] shadow px-[6px] font-[Avenirregular] "
-            value={search}
-            onChange={inputHandler("search")}
-            placeholder="Search"
-          />
+      
           <select
             name="status"
             className="shadow px-[20px] rounded-[40px]  font-[Avenirregular]  h-[35px]  "
@@ -60,18 +53,10 @@ export default function AdminAllPermission() {
             <option value="1">Approve</option>
             <option value="2">Reject</option>
           </select>
-          <select
-            name="section"
-            className="shadow px-[20px] rounded-[40px]  font-[Avenirregular]  h-[35px]  "
-            onChange={inputHandler("section")}
-          >
-            <option value="0">Pending</option>
-            <option value="1">Approve</option>
-            <option value="2">Reject</option>
-          </select>
+      
           <button
             onClick={OnSubmit}
-            className="px-[25-px] py-[20px] rounded-md bg-primary text-[white]"
+            className="px-[15px] py-[10px] rounded-md bg-primary text-[white]"
             type="submit"
           >
           
@@ -93,10 +78,6 @@ export default function AdminAllPermission() {
               to={element.toDate}
             />
           ))}
-
-
-
-
 <div className="flex gap-[50px] m-[10px]">
 
 <div className="border-[2px] border-[black] rounded-[50%] cursor-pointer" onClick={()=>setCount(count-1)}  >
